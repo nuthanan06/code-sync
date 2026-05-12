@@ -1,29 +1,29 @@
 class Solution(object):
     def threeSum(self, nums):
-        nums.sort()
-        array = []
-        for k in range(len(nums)): 
-            leftPointer = k + 1
-            rightPointer = len(nums) - 1
-            if nums[k] > 0 or (k > 0 and nums[k] == nums[k - 1]):
-                continue 
+        noDupes = []
+        nums = sorted(nums) # O(log n)
 
-            while (leftPointer < rightPointer):
-                if nums[leftPointer] + nums[rightPointer] + nums[k] == 0: 
-                    array.append((nums[leftPointer], nums[rightPointer], nums[k]))
-                    
-                    leftPointer += 1
-                    rightPointer -= 1
+        for x in range(len(nums)):
+            if nums[x] > 0:
+                break
 
-                    while leftPointer < rightPointer and nums[leftPointer] == nums[leftPointer - 1]:
-                        leftPointer += 1
+            if x > 0 and nums[x] == nums[x - 1]:
+                continue
 
-                    while leftPointer < rightPointer and nums[rightPointer] == nums[rightPointer + 1]:
-                        rightPointer -= 1
-                        
-                elif nums[leftPointer] + nums[rightPointer] + nums[k] < 0: 
-                    leftPointer += 1
-                else: 
-                    rightPointer -= 1
-                        
-        return array
+            left = x + 1
+            right = len(nums) - 1
+            while left < right: 
+                if nums[left] + nums[right] + nums[x] == 0:
+                    noDupes.append((nums[x], nums[left], nums[right]))
+                    right -= 1
+                    left += 1
+                    while nums[right] == nums[right + 1] and left < right: 
+                        right -= 1
+                    while nums[left] == nums[left - 1] and left < right:  
+                        left += 1
+                elif nums[left] + nums[right] + nums[x] > 0: 
+                    right -= 1
+                else:
+                    left += 1
+            
+        return noDupes
